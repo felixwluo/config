@@ -39,8 +39,8 @@ set hlsearch
 set cursorline
 
 
-"let &t_SI = "\<Esc>]50;CursorShape=1\x7" " Vertical bar in insert mode
-"let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
+" let &t_SI = "\<Esc>]50;CursorShape=1\x7" " Vertical bar in insert mode
+" let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
 
 " leader
 let mapleader = "\<SPACE>"
@@ -63,8 +63,11 @@ nnoremap <Leader>j <C-W>j
 " 重载 .vimrc
 noremap <silent> <leader>S :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
 
+" 全选
+noremap <silent> <C-a> ggVG
+
 " 清除高亮显示
-nmap <Leader>N :noh<CR>
+nmap <Leader>nh :noh<CR>
 
 
 call plug#begin('~/.vim/plugged')
@@ -81,6 +84,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'Yggdroot/indentLine'
     Plug 'preservim/nerdcommenter'
     Plug 'tpope/vim-fugitive'
+    Plug 'Shougo/echodoc.vim'
 
 
     Plug 'ryanoasis/vim-devicons'
@@ -318,9 +322,9 @@ let g:coc_snippet_next = '<tab>'
 
 
 " indentLine
-" let g:indentLine_setColors = 0
+let g:indentLine_setColors = 0
 " let g:indentLine_defaultGroup = 'SpecialKey'
-" let g:indentLine_char = ''
+let g:indentLine_char = ''
 
 " nerdcommenter
 let g:NERDSpaceDelims = 1
@@ -330,4 +334,9 @@ let g:NERDSpaceDelims = 1
 nnoremap <leader>gf :silent! %!gofmt<CR>
 
 " color
-colorscheme gruvbox
+autocmd vimenter * ++nested colorscheme gruvbox
+
+
+" echodoc
+set cmdheight=2
+let g:echodoc#enable_at_startup=1
