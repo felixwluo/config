@@ -37,31 +37,13 @@ set scrolloff=7
 set incsearch
 set hlsearch
 set cursorline
+set timeoutlen=100
 
 
-" let &t_SI = "\<Esc>]50;CursorShape=1\x7" " Vertical bar in insert mode
-" let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
-"Mode Settings
-
+" 光标
 let &t_SI.="\e[5 q" "SI = INSERT mode
 let &t_SR.="\e[4 q" "SR = REPLACE mode
 let &t_EI.="\e[1 q" "EI = NORMAL mode (ELSE)
-
-"Cursor settings:
-
-"  1 -> blinking block
-"  2 -> solid block
-"  3 -> blinking underscore
-"  4 -> solid underscore
-"  5 -> blinking vertical bar
-"  6 -> solid vertical bar
-
-
-
-"let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-"let &t_SR = "\<Esc>]50;CursorShape=2\x7"
-"let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-
 
 
 " leader
@@ -117,11 +99,9 @@ call plug#end()
 " 插件配置
 " nerdtree
 let g:NERDTreeShowHidden=1
-nnoremap <leader>t :NERDTreeToggle<CR>
-nnoremap <C-f> :NERDTreeFind<CR>
-let NERDTreeWinSize=32
-let NERDTreeMinimalUI=1
-let NERDTreeAutoDeleteBuffer=1
+nnoremap <leader>tf :NERDTreeFind<cr>
+nnoremap <silent> <leader>tt :NERDTreeToggle<CR>
+
 
 
 " leaderF
@@ -141,9 +121,13 @@ nmap <unique> <leader>frb <Plug>LeaderfRgCwordLiteralBoundary
 
 
 " airline
+let g:airline_powerline_fonts=1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#tabline#buffer_nr_show=1
+let g:airline#extensions#whitespace#enabled=0
+let g:airline#extensions#whitespace#symbol='!'
 
 " color
 " colorscheme blackboard
