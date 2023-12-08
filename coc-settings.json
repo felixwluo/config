@@ -5,6 +5,7 @@
     "suggest.noselect": true,
     "clangd.enabled": true,
     "clangd.compilationDatabasePath": ".vscode",
+    "clangd.disableProgressNotifications": true,
     "python.pythonPath": "python3",
     "languageserver": {
         "go": {
