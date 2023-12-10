@@ -48,6 +48,8 @@ let &t_EI.="\e[1 q" "EI = NORMAL mode (ELSE)
 
 " leader
 let mapleader = "\<SPACE>"
+inoremap jk <esc>
+
 
 " 按键配置
 nnoremap <leader>v <C-w>v<C-w>l   " open a vertical split and switch to it (,v)
@@ -81,7 +83,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
-    Plug 'statiolake/vim-colorscheme-blackboard'
     Plug 'ojroques/vim-oscyank', {'branch': 'main'}
     Plug 'jiangmiao/auto-pairs'
     Plug 'octol/vim-cpp-enhanced-highlight'
@@ -89,11 +90,20 @@ call plug#begin('~/.vim/plugged')
     Plug 'preservim/nerdcommenter'
     Plug 'tpope/vim-fugitive'
     Plug 'Shougo/echodoc.vim'
+    Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+    Plug 'mhinz/vim-startify'  " 启动页面插件
+    Plug 'puremourning/vimspector'
+
+
 
 
     Plug 'ryanoasis/vim-devicons'
 
 call plug#end()
+
+
+" color
+autocmd VimEnter * ++nested colorscheme gruvbox
 
 
 " 插件配置
@@ -105,19 +115,30 @@ nnoremap <silent> <leader>tt :NERDTreeToggle<CR>
 
 
 " leaderF
+let g:Lf_WindowPosition='popup'
 let g:Lf_PreviewInPopup=1
-let g:Lf_WindowHeight=0.30
-let g:Lf_StlColorscheme = 'powerline'
+let g:Lf_WindowHeight=0.35
 let g:Lf_DefaultExternalTool='rg'
 let g:Lf_WorkingDirectoryMode = 'AF'
-let g:Lf_RootMarkers = ['.git', '.svn', '.hg', '.project', '.root']
+let g:Lf_RootMarkers = ['.git', '.svn', '.project', '.root']
 let g:Lf_ShortcutF = '<C-p>' " 检索文件名
-nnoremap <leader>rg :Leaderf rg<CR>
+" fuzzy 模式
+nnoremap <leader>fu :Leaderf rg<CR>
+" regex 模式
+nnoremap <leader>rg :Leaderf rg --regexMode<CR>
 let g:Lf_CommandMap = {'<C-K>': ['<Up>'], '<C-J>': ['<Down>']}
 " 搜索光标下的词，有边界
-nmap <unique> <leader>frb <Plug>LeaderfRgCwordLiteralBoundary 
-
-
+" nmap <unique> <leader>frb <Plug>LeaderfRgCwordLiteralBoundary 
+let g:Lf_ShortcutB = '<c-l>'
+let g:Lf_CacheDirectory=expand('~/.vim/cache')
+let g:Lf_RgConfig = [
+    \ "--max-columns=150",
+    \ "--glob=!contrib/*",
+    \ "--glob=!build/*",
+    \ "--glob=!thirdparty/*"
+    \ ]
+nnoremap <leader>fl :LeaderfLine<CR>
+nnoremap <leader>ff :LeaderfFunction<CR>
 
 
 " airline
@@ -129,16 +150,9 @@ let g:airline#extensions#tabline#buffer_nr_show=1
 let g:airline#extensions#whitespace#enabled=0
 let g:airline#extensions#whitespace#symbol='!'
 
-" color
-" colorscheme blackboard
 
 
-" coc
-" Use tab for trigger completion with characters ahead and navigate
-" NOTE: There's always complete item selected by default, you may want to enable
-" no select by `"suggest.noselect": true` in your configuration file
-" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-" other plugin before putting this into your config
+" coc-nvim
 inoremap <silent><expr> <TAB>
       \ coc#pum#visible() ? coc#pum#next(1) :
       \ CheckBackspace() ? "\<Tab>" :
@@ -295,8 +309,8 @@ let g:cpp_experimental_template_highlight = 1
 let g:cpp_concepts_highlight = 1
 let g:cpp_no_function_highlight = 1
 
+
 " buffer
-" Buffers and Tabs {{{
 nnoremap <leader>be :enew<cr>           " create new empty buffer
 nnoremap <leader>bn :bnext<cr>          " move to next buffer
 nnoremap <leader>bp :bprevious<cr>      " move to previous buffer
@@ -311,26 +325,14 @@ nnoremap <leader>7 :b7<cr>
 nnoremap <leader>8 :b8<cr>
 nnoremap <leader>9 :b9<cr>
 
-
 " coc-snippets
-" inoremap <silent><expr> <TAB>
-      " \ coc#pum#visible() ? coc#_select_confirm() :
-      " \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-      " \ CheckBackspace() ? "\<TAB>" :
-      " \ coc#refresh()
 
-" function! CheckBackspace() abort
-  " let col = col('.') - 1
-  " return !col || getline('.')[col - 1]  =~# '\s'
-" endfunction
-
-" let g:coc_snippet_next = '<tab>'
 
 
 " indentLine
 let g:indentLine_setColors = 0
-" let g:indentLine_defaultGroup = 'SpecialKey'
-let g:indentLine_char = ''
+let g:indentLine_defaultGroup = 'SpecialKey'
+" let g:indentLine_char = ''
 
 " nerdcommenter
 let g:NERDSpaceDelims = 1
@@ -339,10 +341,16 @@ let g:NERDSpaceDelims = 1
 " coc-go
 nnoremap <leader>gf :silent! %!gofmt<CR>
 
-" color
-autocmd vimenter * ++nested colorscheme gruvbox
 
 
 " echodoc
 set cmdheight=2
 let g:echodoc#enable_at_startup=1
+
+" vim-go
+" 禁止 gofmt 失败时修复vim-go窗口
+let g:go_fmt_fail_silently = 1
+
+
+" debug
+let g:vimspector_enable_mappings = 'HUMAN'
