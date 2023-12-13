@@ -80,7 +80,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'morhetz/gruvbox'
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'preservim/nerdtree'
-    Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
+"    Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
     Plug 'ojroques/vim-oscyank', {'branch': 'main'}
@@ -92,7 +92,9 @@ call plug#begin('~/.vim/plugged')
     Plug 'Shougo/echodoc.vim'
     Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
     Plug 'mhinz/vim-startify'  " 启动页面插件
-    Plug 'puremourning/vimspector'
+    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+    Plug 'junegunn/fzf.vim'
+
 
 
 
@@ -115,30 +117,35 @@ nnoremap <silent> <leader>tt :NERDTreeToggle<CR>
 
 
 " leaderF
-let g:Lf_WindowPosition='popup'
-let g:Lf_PreviewInPopup=1
-let g:Lf_WindowHeight=0.35
-let g:Lf_DefaultExternalTool='rg'
-let g:Lf_WorkingDirectoryMode = 'AF'
-let g:Lf_RootMarkers = ['.git', '.svn', '.project', '.root']
-let g:Lf_ShortcutF = '<C-p>' " 检索文件名
-" fuzzy 模式
-nnoremap <leader>fu :Leaderf rg<CR>
-" regex 模式
-nnoremap <leader>rg :Leaderf rg --regexMode<CR>
-let g:Lf_CommandMap = {'<C-K>': ['<Up>'], '<C-J>': ['<Down>']}
-" 搜索光标下的词，有边界
-" nmap <unique> <leader>frb <Plug>LeaderfRgCwordLiteralBoundary 
-let g:Lf_ShortcutB = '<c-l>'
-let g:Lf_CacheDirectory=expand('~/.vim/cache')
-let g:Lf_RgConfig = [
-    \ "--max-columns=150",
-    \ "--glob=!contrib/*",
-    \ "--glob=!build/*",
-    \ "--glob=!thirdparty/*"
-    \ ]
-nnoremap <leader>fl :LeaderfLine<CR>
-nnoremap <leader>ff :LeaderfFunction<CR>
+" let g:Lf_WindowPosition='popup'
+" let g:Lf_PreviewInPopup=1
+" let g:Lf_WindowHeight=0.35
+" let g:Lf_DefaultExternalTool='rg'
+" let g:Lf_WorkingDirectoryMode = 'AF'
+" let g:Lf_RootMarkers = ['.git', '.svn', '.project', '.root']
+" let g:Lf_ShortcutF = '<C-p>' " 检索文件名
+" " fuzzy 模式
+" nnoremap <leader>fu :Leaderf rg<CR>
+" " regex 模式
+" nnoremap <leader>rg :Leaderf rg --regexMode<CR>
+" let g:Lf_CommandMap = {'<C-K>': ['<Up>'], '<C-J>': ['<Down>']}
+" " 搜索光标下的词，有边界
+" " nmap <unique> <leader>frb <Plug>LeaderfRgCwordLiteralBoundary 
+" let g:Lf_ShortcutB = '<c-l>'
+" let g:Lf_CacheDirectory=expand('~/.vim/cache')
+" let g:Lf_RgConfig = [
+    " \ "--max-columns=150",
+    " \ "--glob=!contrib/*",
+    " \ "--glob=!build/*",
+    " \ "--glob=!thirdparty/*"
+    " \ ]
+" nnoremap <leader>fl :LeaderfLine<CR>
+" nnoremap <leader>ff :LeaderfFunction<CR>
+" fzf
+nnoremap <leader>rg :Rg<CR>
+nnoremap <leader>ff :Files<CR>
+nnoremap <leader>fb :Buffers<CR>
+
 
 
 " airline
@@ -353,4 +360,3 @@ let g:go_fmt_fail_silently = 1
 
 
 " debug
-let g:vimspector_enable_mappings = 'HUMAN'
