@@ -11,6 +11,8 @@ return {
 				go = { "goimports", "gofmt" },
 				python = { "isort", "black" },
 				cmake = { "cmake_format" },
+				sh = { "shfmt" },
+				json = { "jq" },
 			},
 			format_on_save = {
 				lsp_fallback = true,

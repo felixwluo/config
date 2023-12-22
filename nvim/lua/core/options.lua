@@ -1,4 +1,4 @@
-local text_width = 120
+-- local text_width = 120
 local indent_width = 4
 
 -- Automatically read a file when it is changed from the outside.
@@ -37,14 +37,14 @@ vim.opt.showmatch = true
 vim.opt.matchtime = 0
 
 -- Color the column
-vim.opt.colorcolumn = tostring(text_width)
+-- vim.opt.colorcolumn = tostring(text_width)
 
 -- Termguicolors
 vim.opt.termguicolors = true
 
 -- Text width
-vim.opt.textwidth = text_width
-
+-- vim.opt.textwidth = text_width
+--
 -- Don't automatically wrap on load.
 vim.opt.wrap = false
 

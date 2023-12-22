@@ -5,8 +5,9 @@ return {
 		local tree = require("nvim-tree")
 		vim.g.loaded_netrw = 1
 		vim.g.loaded_netrwPlugin = 1
-		vim.cmd([[ highlight NvimTreeFolderArrowClosed guifg=#3FC5FF ]])
-		vim.cmd([[ highlight NvimTreeFolderArrowOpen guifg=#3FC5FF ]])
+		vim.cmd([[ highlight NvimTreeFolderArrowClosed guifg=#ff9c3f ]])
+		vim.cmd([[ highlight NvimTreeFolderArrowOpen guifg=#ff9c3f ]])
+		vim.cmd([[highlight NvimTreeFolderIcon guifg=#ffcf3f]])
 		tree.setup({
 			view = {
 				width = 35,
@@ -40,7 +41,7 @@ return {
 		})
 
 		vim.keymap.set("n", "<leader>ee", "<cmd>NvimTreeToggle<CR>", { desc = "open or close file explorer" })
-		vim.keymap.set("n", "<leader>ef", "<cmd>NvimTreeFindFileToggle<CR>", { desc = "find file on file explorer" })
+		vim.keymap.set("n", "<leader>ef", "<cmd>NvimTreeFindFile<CR>", { desc = "find file on file explorer" })
 		vim.keymap.set("n", "<leader>ec", "<cmd>NvimTreeCollapse<CR>", { desc = "collapse file explorer" })
 		vim.keymap.set("n", "<leader>er", "<cmd>NvimTreeRefresh<CR>", { desc = "refresh file explorer" })
 	end,

@@ -45,6 +45,9 @@ return {
 			opts.desc = "Show documentation for what is under cursor"
 			keymap.set("n", "K", vim.lsp.buf.hover, opts)
 
+			opts.desc = "signature help"
+			keymap.set("n", "<leader>sh", vim.lsp.buf.signature_help, opts)
+
 			opts.desc = "Restart LSP"
 			keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts)
 
@@ -96,6 +99,11 @@ return {
 		})
 
 		lspconfig["cmake"].setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+		})
+
+		lspconfig["jsonls"].setup({
 			capabilities = capabilities,
 			on_attach = on_attach,
 		})
