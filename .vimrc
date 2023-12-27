@@ -1,6 +1,6 @@
 " 配置
+set updatetime=100
 set number
-set ttimeout
 set background=dark
 set expandtab
 set tabstop=4
@@ -8,7 +8,6 @@ set shiftwidth=4
 set softtabstop=4
 set ignorecase
 set smartcase
-set notimeout
 set mouse=c
 set backspace=indent,eol,start
 set autoindent
@@ -27,7 +26,6 @@ set encoding=UTF-8
 set ambiwidth=double
 set nobackup
 set nowritebackup
-set updatetime=100
 set signcolumn=yes
 set wildmenu
 set wildmode=full
@@ -37,37 +35,40 @@ set scrolloff=7
 set incsearch
 set hlsearch
 set cursorline
-set timeoutlen=100
-
+set showmatch "显示匹配的括号
+set t_Co=256
+set conceallevel=1
 
 " 光标
-let &t_SI.="\e[5 q" "SI = INSERT mode
-let &t_SR.="\e[4 q" "SR = REPLACE mode
-let &t_EI.="\e[1 q" "EI = NORMAL mode (ELSE)
+"let &t_SI.="\e[5 q" "SI = INSERT mode
+" let &t_SR.="\e[4 q" "SR = REPLACE mode
+" let &t_EI.="\e[1 q" "EI = NORMAL mode (ELSE)
 
 
 " leader
-let mapleader = "\<SPACE>"
+let mapleader = " "
 inoremap jk <esc>
 
 
 " 按键配置
-nnoremap <leader>v <C-w>v<C-w>l   " open a vertical split and switch to it (,v)
-nnoremap <leader>h <C-w>s<C-w>j   " open a horizontal split and switch to it (,h)
+nnoremap <leader>wv <C-w>v<C-w>l   " 垂直切窗
+nnoremap <leader>wh <C-w>s<C-w>j   " 水平切窗
+
+
 " 跳转至右方的窗口
-nnoremap <Leader>l <C-W>l
+nnoremap <C-l> <C-W>l
 
 " 跳转至左方的窗口
-nnoremap <Leader>hh <C-W>h
+nnoremap <C-h> <C-W>h
 
 " 跳转至上方的子窗口
-nnoremap <Leader>k <C-W>k
+nnoremap <C-k> <C-W>k
 
 " 跳转至下方的子窗口
-nnoremap <Leader>j <C-W>j
+nnoremap <C-j> <C-W>j
 
 " 重载 .vimrc
-noremap <silent> <leader>S :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
+" noremap <silent> <leader>S :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
 
 " 全选
 noremap <silent> <C-a> ggVG
@@ -79,22 +80,24 @@ nmap <Leader>nh :noh<CR>
 call plug#begin('~/.vim/plugged')
     Plug 'morhetz/gruvbox'
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    Plug 'octol/vim-cpp-enhanced-highlight'
     Plug 'preservim/nerdtree'
-"    Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
     Plug 'vim-airline/vim-airline'
-    Plug 'vim-airline/vim-airline-themes'
+    " Plug 'vim-airline/vim-airline-themes'
     Plug 'ojroques/vim-oscyank', {'branch': 'main'}
     Plug 'jiangmiao/auto-pairs'
-    Plug 'octol/vim-cpp-enhanced-highlight'
     Plug 'Yggdroot/indentLine'
     Plug 'preservim/nerdcommenter'
     Plug 'tpope/vim-fugitive'
     Plug 'Shougo/echodoc.vim'
-    Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+"    Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
     Plug 'mhinz/vim-startify'  " 启动页面插件
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
-
+    Plug 'lfv89/vim-interestingwords'
+    Plug 'ericcurtin/CurtineIncSw.vim' " 在c和h文件直接来回切换
+    Plug 'preservim/tagbar'
+    Plug 'airblade/vim-gitgutter'
 
 
 
@@ -103,9 +106,13 @@ call plug#begin('~/.vim/plugged')
 
 call plug#end()
 
+" 在 c和h 文件之间来回切换
+map <leader>w :call CurtineIncSw()<CR>
+
 
 " color
-autocmd VimEnter * ++nested colorscheme gruvbox
+colorscheme gruvbox 
+let g:airline_theme="gruvbox"
 
 
 " 插件配置
@@ -113,38 +120,16 @@ autocmd VimEnter * ++nested colorscheme gruvbox
 let g:NERDTreeShowHidden=1
 nnoremap <leader>tf :NERDTreeFind<cr>
 nnoremap <silent> <leader>tt :NERDTreeToggle<CR>
+"当NERDTree为剩下的唯一窗口时自动关闭
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+let g:NERDTreeWinSize = 35
 
 
-
-" leaderF
-" let g:Lf_WindowPosition='popup'
-" let g:Lf_PreviewInPopup=1
-" let g:Lf_WindowHeight=0.35
-" let g:Lf_DefaultExternalTool='rg'
-" let g:Lf_WorkingDirectoryMode = 'AF'
-" let g:Lf_RootMarkers = ['.git', '.svn', '.project', '.root']
-" let g:Lf_ShortcutF = '<C-p>' " 检索文件名
-" " fuzzy 模式
-" nnoremap <leader>fu :Leaderf rg<CR>
-" " regex 模式
-" nnoremap <leader>rg :Leaderf rg --regexMode<CR>
-" let g:Lf_CommandMap = {'<C-K>': ['<Up>'], '<C-J>': ['<Down>']}
-" " 搜索光标下的词，有边界
-" " nmap <unique> <leader>frb <Plug>LeaderfRgCwordLiteralBoundary 
-" let g:Lf_ShortcutB = '<c-l>'
-" let g:Lf_CacheDirectory=expand('~/.vim/cache')
-" let g:Lf_RgConfig = [
-    " \ "--max-columns=150",
-    " \ "--glob=!contrib/*",
-    " \ "--glob=!build/*",
-    " \ "--glob=!thirdparty/*"
-    " \ ]
-" nnoremap <leader>fl :LeaderfLine<CR>
-" nnoremap <leader>ff :LeaderfFunction<CR>
 " fzf
 nnoremap <leader>rg :Rg<CR>
 nnoremap <leader>ff :Files<CR>
 nnoremap <leader>fb :Buffers<CR>
+nnoremap <leader>fl :BLines<CR>
 
 
 
@@ -302,9 +287,9 @@ nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
 " osc52
-nmap <leader>c <Plug>OSCYankOperator
-nmap <leader>cc <leader>c_
-vmap <leader>c <Plug>OSCYankVisual
+nmap gcc <Plug>OSCYankOperator
+nmap <leader>cp <leader>c_
+vmap gcc <Plug>OSCYankVisual
 
 " vim-cpp-enhanced
 let g:cpp_class_scope_highlight = 1
@@ -319,7 +304,7 @@ let g:cpp_no_function_highlight = 1
 
 " buffer
 nnoremap <leader>be :enew<cr>           " create new empty buffer
-nnoremap <leader>bn :bnext<cr>          " move to next buffer
+nnoremap <TAB> :bnext<cr>          " move to next buffer
 nnoremap <leader>bp :bprevious<cr>      " move to previous buffer
 nnoremap <leader>bq :bp <BAR> bd #<cr>  " move to previous and close buffer
 nnoremap <leader>1 :b1<cr>
@@ -349,14 +334,36 @@ let g:NERDSpaceDelims = 1
 nnoremap <leader>gf :silent! %!gofmt<CR>
 
 
-
 " echodoc
 set cmdheight=2
 let g:echodoc#enable_at_startup=1
 
 " vim-go
 " 禁止 gofmt 失败时修复vim-go窗口
-let g:go_fmt_fail_silently = 1
+" let g:go_fmt_fail_silently = 1
 
 
-" debug
+" 语法高亮
+let g:cpp_class_scope_highlight = 1
+let g:cpp_member_variable_highlight = 1
+let g:cpp_class_decl_highlight = 1
+let g:cpp_posix_standard = 1
+let g:cpp_experimental_simple_template_highlight = 1
+let g:cpp_experimental_template_highlight = 1
+let c_no_curly_error=1
+
+" 光标单词高亮
+let g:interestingWordsRandomiseColors = 1
+
+" tagbar
+nmap <leader>t :TagbarToggle<CR>
+
+" gitgutter
+function! GitStatus()
+  let [a,m,r] = GitGutterGetHunkSummary()
+  return printf('+%d ~%d -%d', a, m, r)
+endfunction
+set statusline+=%{GitStatus()}
+
+" 折叠所有未更改的
+nmap <leader>gf :GitGutterFold<CR>
