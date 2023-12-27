@@ -76,6 +76,11 @@ noremap <silent> <C-a> ggVG
 " 清除高亮显示
 nmap <Leader>nh :noh<CR>
 
+if empty(glob('~/.vim/autoload/plug.vim'))
+  :exe '!curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+              \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  au VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 
 call plug#begin('~/.vim/plugged')
     Plug 'morhetz/gruvbox'
