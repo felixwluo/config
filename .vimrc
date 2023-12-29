@@ -23,7 +23,7 @@ set autoread
 set laststatus=2
 set nocompatible
 set encoding=UTF-8
-set ambiwidth=double
+" set ambiwidth=double
 set nobackup
 set nowritebackup
 set signcolumn=yes
@@ -31,29 +31,22 @@ set wildmenu
 set wildmode=full
 set wildoptions=pum
 set termguicolors
-set scrolloff=7
+set scrolloff=5
 set incsearch
 set hlsearch
 set cursorline
 set showmatch "显示匹配的括号
 set t_Co=256
 set conceallevel=1
-
-" 光标
-"let &t_SI.="\e[5 q" "SI = INSERT mode
-" let &t_SR.="\e[4 q" "SR = REPLACE mode
-" let &t_EI.="\e[1 q" "EI = NORMAL mode (ELSE)
-
+set hidden
 
 " leader
 let mapleader = " "
 inoremap jk <esc>
 
-
 " 按键配置
 nnoremap <leader>wv <C-w>v<C-w>l   " 垂直切窗
 nnoremap <leader>wh <C-w>s<C-w>j   " 水平切窗
-
 
 " 跳转至右方的窗口
 nnoremap <C-l> <C-W>l
@@ -88,14 +81,13 @@ call plug#begin('~/.vim/plugged')
     Plug 'octol/vim-cpp-enhanced-highlight'
     Plug 'preservim/nerdtree'
     Plug 'vim-airline/vim-airline'
-    " Plug 'vim-airline/vim-airline-themes'
+    Plug 'vim-airline/vim-airline-themes'
     Plug 'ojroques/vim-oscyank', {'branch': 'main'}
     Plug 'jiangmiao/auto-pairs'
     Plug 'Yggdroot/indentLine'
     Plug 'preservim/nerdcommenter'
     Plug 'tpope/vim-fugitive'
     Plug 'Shougo/echodoc.vim'
-"    Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
     Plug 'mhinz/vim-startify'  " 启动页面插件
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
@@ -103,22 +95,18 @@ call plug#begin('~/.vim/plugged')
     Plug 'ericcurtin/CurtineIncSw.vim' " 在c和h文件直接来回切换
     Plug 'preservim/tagbar'
     Plug 'airblade/vim-gitgutter'
+    Plug 'jstemmer/gotags'
 
-
-
-
+    Plug 'Xuyuanp/nerdtree-git-plugin'
     Plug 'ryanoasis/vim-devicons'
-
 call plug#end()
 
 " 在 c和h 文件之间来回切换
 map <leader>w :call CurtineIncSw()<CR>
 
-
 " color
 colorscheme gruvbox 
-let g:airline_theme="gruvbox"
-
+let g:airline_theme="badwolf"
 
 " 插件配置
 " nerdtree
@@ -129,14 +117,11 @@ nnoremap <silent> <leader>tt :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 let g:NERDTreeWinSize = 35
 
-
 " fzf
 nnoremap <leader>rg :Rg<CR>
 nnoremap <leader>ff :Files<CR>
 nnoremap <leader>fb :Buffers<CR>
 nnoremap <leader>fl :BLines<CR>
-
-
 
 " airline
 let g:airline_powerline_fonts=1
@@ -146,8 +131,7 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#tabline#buffer_nr_show=1
 let g:airline#extensions#whitespace#enabled=0
 let g:airline#extensions#whitespace#symbol='!'
-
-
+let g:airline#extensions#tabline#formatter = 'unique_tail'
 
 " coc-nvim
 inoremap <silent><expr> <TAB>
@@ -306,7 +290,6 @@ let g:cpp_experimental_template_highlight = 1
 let g:cpp_concepts_highlight = 1
 let g:cpp_no_function_highlight = 1
 
-
 " buffer
 nnoremap <leader>be :enew<cr>           " create new empty buffer
 nnoremap <TAB> :bnext<cr>          " move to next buffer
@@ -324,8 +307,6 @@ nnoremap <leader>9 :b9<cr>
 
 " coc-snippets
 
-
-
 " indentLine
 let g:indentLine_setColors = 0
 let g:indentLine_defaultGroup = 'SpecialKey'
@@ -334,19 +315,12 @@ let g:indentLine_defaultGroup = 'SpecialKey'
 " nerdcommenter
 let g:NERDSpaceDelims = 1
 
-
-" coc-go
+" go
 nnoremap <leader>gf :silent! %!gofmt<CR>
 
-
-" echodoc
+"echodoc
 set cmdheight=2
 let g:echodoc#enable_at_startup=1
-
-" vim-go
-" 禁止 gofmt 失败时修复vim-go窗口
-" let g:go_fmt_fail_silently = 1
-
 
 " 语法高亮
 let g:cpp_class_scope_highlight = 1
@@ -369,6 +343,50 @@ function! GitStatus()
   return printf('+%d ~%d -%d', a, m, r)
 endfunction
 set statusline+=%{GitStatus()}
-
 " 折叠所有未更改的
 nmap <leader>gf :GitGutterFold<CR>
+
+" auto compile clangd 生成 compile.json 文件
+function! s:generate_compile_commands()
+  if empty(glob('CMakeLists.txt'))
+    echo "Can't find CMakeLists.txt"
+    return
+  endif
+  if empty(glob('.vscode'))
+    execute 'silent !mkdir .vscode'
+  endif
+  execute '!cmake -DCMAKE_BUILD_TYPE=debug
+      \ -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -S . -B .vscode'
+endfunction
+command! -nargs=0 Gcmake :call s:generate_compile_commands()
+
+" gotags
+let g:tagbar_type_go = {
+	\ 'ctagstype' : 'go',
+	\ 'kinds'     : [
+		\ 'p:package',
+		\ 'i:imports:1',
+		\ 'c:constants',
+		\ 'v:variables',
+		\ 't:types',
+		\ 'n:interfaces',
+		\ 'w:fields',
+		\ 'e:embedded',
+		\ 'm:methods',
+		\ 'r:constructor',
+		\ 'f:functions'
+	\ ],
+	\ 'sro' : '.',
+	\ 'kind2scope' : {
+		\ 't' : 'ctype',
+		\ 'n' : 'ntype'
+	\ },
+	\ 'scope2kind' : {
+		\ 'ctype' : 't',
+		\ 'ntype' : 'n'
+	\ },
+	\ 'ctagsbin'  : 'gotags',
+	\ 'ctagsargs' : '-sort -silent'
+\ }
+
+
