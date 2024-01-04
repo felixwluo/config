@@ -15,6 +15,7 @@ set cindent
 set cinoptions={0,1s,t0,n-2,p2s,(03s,=,5s,>1s,=1s,:1s
 set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp836,latin1
 filetype plugin on
+filetype plugin indent on
 filetype on
 filetype indent on
 syntax enable
@@ -37,7 +38,7 @@ set hlsearch
 set cursorline
 set showmatch "显示匹配的括号
 set t_Co=256
-set conceallevel=1
+" set conceallevel=1
 set hidden
 
 " leader
@@ -48,6 +49,7 @@ inoremap jk <esc>
 nnoremap <leader>wv <C-w>v<C-w>l   " 垂直切窗
 nnoremap <leader>wh <C-w>s<C-w>j   " 水平切窗
 
+inoremap <C-d> <esc>dd " 删除整行 
 " 跳转至右方的窗口
 nnoremap <C-l> <C-W>l
 
@@ -69,6 +71,7 @@ noremap <silent> <C-a> ggVG
 " 清除高亮显示
 nmap <Leader>nh :noh<CR>
 
+
 if empty(glob('~/.vim/autoload/plug.vim'))
   :exe '!curl -fLo ~/.vim/autoload/plug.vim --create-dirs
               \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
@@ -77,6 +80,7 @@ endif
 
 call plug#begin('~/.vim/plugged')
     Plug 'morhetz/gruvbox'
+    Plug 'tomasr/molokai'
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'octol/vim-cpp-enhanced-highlight'
     Plug 'preservim/nerdtree'
@@ -84,7 +88,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'vim-airline/vim-airline-themes'
     Plug 'ojroques/vim-oscyank', {'branch': 'main'}
     Plug 'jiangmiao/auto-pairs'
-    Plug 'Yggdroot/indentLine'
+    " Plug 'Yggdroot/indentLine'
     Plug 'preservim/nerdcommenter'
     Plug 'tpope/vim-fugitive'
     Plug 'Shougo/echodoc.vim'
@@ -96,6 +100,10 @@ call plug#begin('~/.vim/plugged')
     Plug 'preservim/tagbar'
     Plug 'airblade/vim-gitgutter'
     Plug 'jstemmer/gotags'
+    Plug 'easymotion/vim-easymotion'
+    Plug 'itchyny/vim-cursorword'
+    
+
 
     Plug 'Xuyuanp/nerdtree-git-plugin'
     Plug 'ryanoasis/vim-devicons'
@@ -105,8 +113,11 @@ call plug#end()
 map <leader>w :call CurtineIncSw()<CR>
 
 " color
-colorscheme gruvbox 
+colorscheme molokai 
+let g:molokai_original = 1
 let g:airline_theme="badwolf"
+let g:rehash256 = 1
+
 
 " 插件配置
 " nerdtree
@@ -117,11 +128,14 @@ nnoremap <silent> <leader>tt :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 let g:NERDTreeWinSize = 35
 
+
 " fzf
 nnoremap <leader>rg :Rg<CR>
 nnoremap <leader>ff :Files<CR>
 nnoremap <leader>fb :Buffers<CR>
 nnoremap <leader>fl :BLines<CR>
+let g:fzf_layout = { 'down': '50%'  }
+
 
 " airline
 let g:airline_powerline_fonts=1
@@ -308,9 +322,8 @@ nnoremap <leader>9 :b9<cr>
 " coc-snippets
 
 " indentLine
-let g:indentLine_setColors = 0
-let g:indentLine_defaultGroup = 'SpecialKey'
-" let g:indentLine_char = ''
+" let g:indentLine_setColors = 0
+" let g:indentLine_defaultGroup = 'SpecialKey'
 
 " nerdcommenter
 let g:NERDSpaceDelims = 1
@@ -352,11 +365,11 @@ function! s:generate_compile_commands()
     echo "Can't find CMakeLists.txt"
     return
   endif
-  if empty(glob('.vscode'))
-    execute 'silent !mkdir .vscode'
+  if empty(glob('build'))
+    execute 'silent !mkdir build'
   endif
   execute '!cmake -DCMAKE_BUILD_TYPE=debug
-      \ -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -S . -B .vscode'
+      \ -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -S . -B build'
 endfunction
 command! -nargs=0 Gcmake :call s:generate_compile_commands()
 
@@ -388,5 +401,4 @@ let g:tagbar_type_go = {
 	\ 'ctagsbin'  : 'gotags',
 	\ 'ctagsargs' : '-sort -silent'
 \ }
-
 
