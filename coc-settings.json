@@ -4,22 +4,6 @@
     "clangd.enabled": true,
     "clangd.path": "/usr/bin/clangd",
     "coc.preferences.extensionUpdateCheck": "daily",
-    "java.codeGeneration.useBlocks": true,
-    "java.completion.enabled": false,
-    "java.completion.guessMethodArguments": true,
-    "java.errors.incompleteClasspath.severity": "ignore",
-    "java.format.onType.enabled": true,
-    "java.import.maven.enabled": true,
-    "java.imports.gradle.wrapper.checksums": [
-        {
-            "allowed": true,
-            "sha256": "ee3739525a995bcb5601621a6e2daec1f183bbefc375743acc235cec33547e04"
-        }
-    ],
-    "java.jdt.ls.java.home": "/usr/lib/jdk8/TencentKona-8",
-    "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx10G -Xms100m -Xlog:disable",
-    "java.maven.downloadSources": true,
-    "java.signatureHelp.enabled": true,
     "languageserver": {
         "cmake": {
             "command": "cmake-language-server",
@@ -31,6 +15,16 @@
             },
             "rootPatterns": [
                 "build/"
+            ]
+        },
+        "groovy": {
+            "command": "java",
+            "args": [
+                "-jar",
+                "/data/home/felixwluo/.config/coc/extensions/node_modules/coc-groovy/server/groovy-language-server-all.jar"
+            ],
+            "filetypes": [
+                "groovy"
             ]
         }
     },

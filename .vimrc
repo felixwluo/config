@@ -40,6 +40,7 @@ set showmatch "显示匹配的括号
 set t_Co=256
 " set conceallevel=1
 set hidden
+set history=1000
 
 " leader
 let mapleader = " "
@@ -101,7 +102,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'airblade/vim-gitgutter'
     Plug 'jstemmer/gotags'
     Plug 'easymotion/vim-easymotion'
-    Plug 'itchyny/vim-cursorword'
     
 
 
@@ -122,11 +122,12 @@ let g:rehash256 = 1
 " 插件配置
 " nerdtree
 let g:NERDTreeShowHidden=1
+let g:NERDTreeWinSize=30
+let g:NERDTreeShowBookmarks=1
 nnoremap <leader>tf :NERDTreeFind<cr>
 nnoremap <silent> <leader>tt :NERDTreeToggle<CR>
 "当NERDTree为剩下的唯一窗口时自动关闭
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-let g:NERDTreeWinSize = 35
 
 
 " fzf
