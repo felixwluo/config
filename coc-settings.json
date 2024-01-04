@@ -1,38 +1,42 @@
 {
-    "coc.preferences.extensionUpdateCheck": "daily",
-    "suggest.timeout": 5000,
-    "suggest.enablePreselect": false,
-    "suggest.noselect": true,
-    "clangd.enabled": true,
-    "clangd.compilationDatabasePath": ".vscode",
+    "clangd.compilationDatabasePath": "build",
     "clangd.disableProgressNotifications": true,
-    "python.pythonPath": "python3",
+    "clangd.enabled": true,
+    "clangd.path": "/usr/bin/clangd",
+    "coc.preferences.extensionUpdateCheck": "daily",
+    "java.codeGeneration.useBlocks": true,
+    "java.completion.enabled": false,
+    "java.completion.guessMethodArguments": true,
+    "java.errors.incompleteClasspath.severity": "ignore",
+    "java.format.onType.enabled": true,
+    "java.import.maven.enabled": true,
+    "java.imports.gradle.wrapper.checksums": [
+        {
+            "allowed": true,
+            "sha256": "ee3739525a995bcb5601621a6e2daec1f183bbefc375743acc235cec33547e04"
+        }
+    ],
+    "java.jdt.ls.java.home": "/usr/lib/jdk8/TencentKona-8",
+    "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx10G -Xms100m -Xlog:disable",
+    "java.maven.downloadSources": true,
+    "java.signatureHelp.enabled": true,
     "languageserver": {
-        "go": {
-            "command": "gopls",
-            "rootPatterns": [
-                "go.work",
-                "go.mod",
-                ".vim/",
-                ".git/",
-                ".hg/"
-            ],
-            "trace.server": "verbose",
+        "cmake": {
+            "command": "cmake-language-server",
             "filetypes": [
-                "go"
+                "cmake"
             ],
             "initializationOptions": {
-                "usePlaceholders": true
-            }
+                "buildDirectory": "build"
+            },
+            "rootPatterns": [
+                "build/"
+            ]
         }
     },
-    "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx8G -Xms100m -Xlog:disable",
-    "java.import.maven.enabled": true,
-    "java.completion.enabled": false,
-    "java.format.onType.enabled": true,
-    "java.completion.guessMethodArguments": true,
-    "java.codeGeneration.useBlocks": true,
-    "java.errors.incompleteClasspath.severity": "ignore",
-    "java.signatureHelp.enabled": true,
-    "java.maven.downloadSources": true
+    "python.linting.pylintEnabled": true,
+    "python.pythonPath": "/usr/bin/python3",
+    "suggest.enablePreselect": false,
+    "suggest.noselect": true,
+    "suggest.timeout": 5000
 }
