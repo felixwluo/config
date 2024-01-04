@@ -50,7 +50,6 @@ inoremap jk <esc>
 nnoremap <leader>wv <C-w>v<C-w>l   " 垂直切窗
 nnoremap <leader>wh <C-w>s<C-w>j   " 水平切窗
 
-inoremap <C-d> <esc>dd " 删除整行 
 " 跳转至右方的窗口
 nnoremap <C-l> <C-W>l
 
@@ -102,6 +101,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'airblade/vim-gitgutter'
     Plug 'jstemmer/gotags'
     Plug 'easymotion/vim-easymotion'
+    Plug 'luochen1990/rainbow'
     
 
 
@@ -115,9 +115,9 @@ map <leader>w :call CurtineIncSw()<CR>
 " color
 colorscheme molokai 
 let g:molokai_original = 1
-let g:airline_theme="badwolf"
 let g:rehash256 = 1
-
+hi Visual guibg=Grey guifg=NONE
+let g:airline_theme="badwolf"
 
 " 插件配置
 " nerdtree
@@ -403,3 +403,5 @@ let g:tagbar_type_go = {
 	\ 'ctagsargs' : '-sort -silent'
 \ }
 
+" rainbow
+let g:rainbow_active=1
