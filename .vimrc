@@ -42,6 +42,8 @@ set t_Co=256
 set hidden
 set history=1000
 
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+
 " leader
 let mapleader = " "
 inoremap jk <esc>
@@ -101,11 +103,9 @@ call plug#begin('~/.vim/plugged')
     Plug 'airblade/vim-gitgutter'
     Plug 'jstemmer/gotags'
     Plug 'easymotion/vim-easymotion'
-    Plug 'luochen1990/rainbow'
     
 
 
-    Plug 'Xuyuanp/nerdtree-git-plugin'
     Plug 'ryanoasis/vim-devicons'
 call plug#end()
 
@@ -124,6 +124,8 @@ let g:airline_theme="badwolf"
 let g:NERDTreeShowHidden=1
 let g:NERDTreeWinSize=30
 let g:NERDTreeShowBookmarks=1
+let g:NERDTreeDirArrowExpandable = ''
+let g:NERDTreeDirArrowCollapsible = ''
 nnoremap <leader>tf :NERDTreeFind<cr>
 nnoremap <silent> <leader>tt :NERDTreeToggle<CR>
 "当NERDTree为剩下的唯一窗口时自动关闭
@@ -366,11 +368,11 @@ function! s:generate_compile_commands()
     echo "Can't find CMakeLists.txt"
     return
   endif
-  if empty(glob('build'))
-    execute 'silent !mkdir build'
+  if empty(glob('.vscode'))
+    execute 'silent !mkdir .vscode'
   endif
   execute '!cmake -DCMAKE_BUILD_TYPE=debug
-      \ -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -S . -B build'
+      \ -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -S . -B .vscode'
 endfunction
 command! -nargs=0 Gcmake :call s:generate_compile_commands()
 
@@ -405,3 +407,5 @@ let g:tagbar_type_go = {
 
 " rainbow
 let g:rainbow_active=1
+
+set formatoptions-=cro
