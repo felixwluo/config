@@ -90,7 +90,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'vim-airline/vim-airline-themes'
     Plug 'ojroques/vim-oscyank', {'branch': 'main'}
     Plug 'jiangmiao/auto-pairs'
-    " Plug 'Yggdroot/indentLine'
     Plug 'preservim/nerdcommenter'
     Plug 'tpope/vim-fugitive'
     Plug 'Shougo/echodoc.vim'
@@ -103,11 +102,23 @@ call plug#begin('~/.vim/plugged')
     Plug 'airblade/vim-gitgutter'
     Plug 'jstemmer/gotags'
     Plug 'easymotion/vim-easymotion'
-    
+    Plug 'Yggdroot/indentLine'
+
 
 
     Plug 'ryanoasis/vim-devicons'
 call plug#end()
+
+" startify 欢迎界面
+let g:startify_custom_header = [
+            \ '███████╗███████╗██╗     ██╗██╗  ██╗',
+            \ '██╔════╝██╔════╝██║     ██║╚██╗██╔╝',
+            \ '█████╗  █████╗  ██║     ██║ ╚███╔╝ ',
+            \ '██╔══╝  ██╔══╝  ██║     ██║ ██╔██╗ ',
+            \ '██║     ███████╗███████╗██║██╔╝ ██╗',
+            \ '╚═╝     ╚══════╝╚══════╝╚═╝╚═╝  ╚═╝'
+            \ ]
+
 
 " 在 c和h 文件之间来回切换
 map <leader>w :call CurtineIncSw()<CR>
@@ -124,12 +135,14 @@ let g:airline_theme="badwolf"
 let g:NERDTreeShowHidden=1
 let g:NERDTreeWinSize=30
 let g:NERDTreeShowBookmarks=1
-let g:NERDTreeDirArrowExpandable = ''
-let g:NERDTreeDirArrowCollapsible = ''
+let g:NERDTreeDirArrowExpandable = ' '
+let g:NERDTreeDirArrowCollapsible = ' '
 nnoremap <leader>tf :NERDTreeFind<cr>
 nnoremap <silent> <leader>tt :NERDTreeToggle<CR>
 "当NERDTree为剩下的唯一窗口时自动关闭
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" 读取一个buffer的时候 才去刷新树
+autocmd BufReadPost * if exists('t:NERDTreeBufName') && bufwinnr(t:NERDTreeBufName) != -1 | execute 'NERDTreeRefresh' | endif
 
 
 " fzf
@@ -324,10 +337,6 @@ nnoremap <leader>9 :b9<cr>
 
 " coc-snippets
 
-" indentLine
-" let g:indentLine_setColors = 0
-" let g:indentLine_defaultGroup = 'SpecialKey'
-
 " nerdcommenter
 let g:NERDSpaceDelims = 1
 
@@ -368,11 +377,11 @@ function! s:generate_compile_commands()
     echo "Can't find CMakeLists.txt"
     return
   endif
-  if empty(glob('.vscode'))
-    execute 'silent !mkdir .vscode'
+  if empty(glob('build'))
+    execute 'silent !mkdir build'
   endif
   execute '!cmake -DCMAKE_BUILD_TYPE=debug
-      \ -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -S . -B .vscode'
+      \ -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -S . -B build'
 endfunction
 command! -nargs=0 Gcmake :call s:generate_compile_commands()
 
@@ -405,7 +414,5 @@ let g:tagbar_type_go = {
 	\ 'ctagsargs' : '-sort -silent'
 \ }
 
-" rainbow
-let g:rainbow_active=1
 
 set formatoptions-=cro
