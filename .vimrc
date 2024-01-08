@@ -1,4 +1,8 @@
 " 配置
+set ttyfast
+set lazyredraw
+set pastetoggle=<F7>
+set noautochdir
 set updatetime=100
 set number
 set background=dark
@@ -8,7 +12,7 @@ set shiftwidth=4
 set softtabstop=4
 set ignorecase
 set smartcase
-set mouse=c
+set mouse=a
 set backspace=indent,eol,start
 set autoindent
 set cindent
@@ -133,7 +137,7 @@ let g:airline_theme="badwolf"
 " 插件配置
 " nerdtree
 let g:NERDTreeShowHidden=1
-let g:NERDTreeWinSize=30
+let g:NERDTreeWinSize=35
 let g:NERDTreeShowBookmarks=1
 let g:NERDTreeDirArrowExpandable = ' '
 let g:NERDTreeDirArrowCollapsible = ' '
@@ -413,6 +417,7 @@ let g:tagbar_type_go = {
 	\ 'ctagsbin'  : 'gotags',
 	\ 'ctagsargs' : '-sort -silent'
 \ }
+
 
 
 set formatoptions-=cro
